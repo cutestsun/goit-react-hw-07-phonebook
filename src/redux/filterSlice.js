@@ -13,7 +13,3 @@ export const filterSlice = createSlice({
 export const filterReducer = filterSlice.reducer;
 
 export const { setFilter } = filterSlice.actions;
-
-//Selectors
-
-export const getFilter = state => state.filter;

@@ -1,21 +1,15 @@
-import { nanoid } from 'nanoid';
 import { Form, Label } from './ContactsForm.styled';
 import { Field, ErrorMessage, Formik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, setContact } from 'redux/contactsSlice';
 import { validationSchema } from 'components/helpers/validationSchema';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 export const ContactsForm = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
-  const onSubmit = (values, actions) => {
-    const newContactTemplate = {
-      name: values.name,
-      number: values.number,
-      id: nanoid(),
-    };
-
+  const onSubmit = (values, action) => {
     const isInContacts = contacts.some(
       ({ name }) => name.toLowerCase() === values.name.toLowerCase()
     );
@@ -24,9 +18,9 @@ export const ContactsForm = () => {
       return alert(`${values.name} is already in contacts`);
     }
 
-    dispatch(setContact(newContactTemplate));
+    dispatch(addContact(values));
 
-    actions.resetForm();
+    action.resetForm();
   };
 
   return (
